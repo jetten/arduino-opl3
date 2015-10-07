@@ -12,7 +12,7 @@ byte B = 13; // A1 Address select input
 
 void setup() {
   
-  Serial.begin(230400);
+  Serial.begin(1000000);
   // Set port D & B to outputx
   DDRD = DDRD | B11111111;
   DDRB = DDRB | B11111111;
