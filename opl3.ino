@@ -1,5 +1,6 @@
 char inputhex[2];
 byte data = 0;
+byte syncdata = 0;
 
 boolean addresswrite = true;
 
@@ -11,7 +12,7 @@ byte B = 13; // A1 Address select input
 
 void setup() {
   
-  Serial.begin(115200);
+  Serial.begin(230400);
   // Set port D & B to outputx
   DDRD = DDRD | B11111111;
   DDRB = DDRB | B11111111;
@@ -22,14 +23,21 @@ void setup() {
   pinMode(WR,OUTPUT); // WR Write enable
 
   digitalWrite(A,LOW);
+  digitalWrite(B,LOW);
   digitalWrite(CS,HIGH);
   digitalWrite(WR,LOW);
   
 }
 
 void loop() {
+
   
-  if(Serial.available() > 0) {
+  while(true) {
+    syncdata = Serial.read();
+    if(syncdata >= 0 && syncdata <=3) {
+      break;
+    }
+  } 
     // Read 2 characters from the serial buffer into inputhex
     Serial.readBytes(inputhex,2);
 
@@ -69,7 +77,7 @@ void loop() {
     if(addresswrite) {addresswrite = false;}
     else {addresswrite = true;}
     
-  }
+  
 
   
 
