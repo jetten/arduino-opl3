@@ -35,11 +35,11 @@ void loop() {
     }
   }
 
+  // set IOWRITE pin HIGH
+  PORTB = PORTB | B00010000;
+
   // read two characters as hex string
   Serial.readBytes(hex_s, 2);
-
-  // set IOWRITE to LOW
-  PORTB = B11101111;
 
   // convert hex_s to byte
   data = strtol(hex_s, NULL, 16);
@@ -52,6 +52,6 @@ void loop() {
 
   // 100 ns delay
 
-  // write IOWRITE pin HIGH
-  PORTB = PORTB | B00010000;
+  // set IOWRITE pin LOW
+  PORTB = PORTB & B11101111;
 }
