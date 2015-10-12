@@ -35,23 +35,37 @@ void loop() {
     }
   }
 
-  // set IOWRITE pin HIGH
-  PORTB = PORTB | B00010000;
+  /*
+   * PORTB pins (X = unused):
+   * X, X, X, IOWRITE, A1, A0, D7, D6
+   *
+   * PORTD pins (X = unused):
+   * D5, D4, D3, D2, D1, D0, X, X
+   */
 
-  // read two characters as hex string
+  // clear PORTB, don't touch unused pins
+  PORTB &= B11100000;
+  // set IOWRITE pin HIGH
+  PORTB |= B00010000;
+
+  // clear PORTD, don't touch unused pins
+  PORTD &= B00000011;
+
+  // read two ASCII hex characters from serial in
   Serial.readBytes(hex_s, 2);
 
   // convert hex_s to byte
   data = strtol(hex_s, NULL, 16);
 
-  PORTB = io_addr << 2;
+  // write address to address select pins
+  PORTB |= io_addr << 2;
 
-  // write data to the data pins
-  PORTD = data << 2;
-  PORTB = data >> 6;
+  // write data
+  PORTD |= data << 2;
+  PORTB |= data >> 6;
 
   // 100 ns delay
 
   // set IOWRITE pin LOW
-  PORTB = PORTB & B11101111;
+  PORTB &= B11101111;
 }
