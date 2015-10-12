@@ -11,7 +11,7 @@ byte B = 11; // A1 Address select input
 byte IOWRITE = 12; // ISA I/O write pin
 
 void setup() {
-  Serial.begin(1000000);
+  Serial.begin(230400);
 
   // Set port D & B to outputx
   DDRD = DDRD | B11111111;
